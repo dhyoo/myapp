@@ -1,0 +1,25 @@
+/* Dashboard Layout Styles */
+.layout {
+  @apply flex flex-col min-h-screen bg-gray-50;
+}
+
+.content {
+  @apply flex flex-1 pt-16 pb-12;
+}
+
+.sidebar {
+  @apply fixed left-0 top-16 bottom-12 w-64 z-30 flex-shrink-0;
+}
+
+.main {
+  @apply flex-1 ml-64 w-full min-w-0;
+}
+
+.mainContent {
+  @apply h-full overflow-y-auto bg-gray-50;
+}
+
+.mainInner {
+  @apply p-6 max-w-7xl mx-auto;
+}
+

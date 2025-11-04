@@ -1,0 +1,57 @@
+/* Top Header Styles */
+.header {
+  @apply fixed top-0 left-0 right-0 h-16 bg-white border-b border-gray-300 shadow-md z-50;
+}
+
+.container {
+  @apply h-full flex items-center justify-between px-6;
+}
+
+.logoSection {
+  @apply flex items-center gap-4;
+}
+
+.logoContainer {
+  @apply flex items-center gap-2;
+}
+
+.logoIcon {
+  @apply w-8 h-8 rounded-md bg-primary-600 flex items-center justify-center;
+}
+
+.logoSvg {
+  @apply w-5 h-5 text-white;
+}
+
+.title {
+  @apply text-lg font-bold text-gray-900;
+}
+
+.rightSection {
+  @apply flex items-center gap-4;
+}
+
+.permissionLabel {
+  @apply flex items-center gap-2;
+}
+
+.permissionText {
+  @apply text-sm font-medium text-gray-700 hidden sm:inline;
+}
+
+.permissionSelect {
+  @apply px-3 py-1.5 border border-gray-300 rounded-md bg-white text-sm font-medium text-gray-700 hover:border-primary-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all;
+}
+
+.userInfo {
+  @apply flex items-center gap-2 px-2 py-1.5 rounded-md border border-gray-300 bg-white;
+}
+
+.userAvatar {
+  @apply w-8 h-8 rounded-full bg-primary-600 flex items-center justify-center text-white font-semibold text-xs;
+}
+
+.userName {
+  @apply text-sm font-medium text-gray-700 hidden md:inline;
+}
+

@@ -22,6 +22,26 @@ export class ErrorBoundary extends Component<Props, State> {
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
     console.error('Error caught by boundary:', error, errorInfo);
+    
+    // TODO: Sentry 등 에러 로깅 서비스 연동
+    // if (window.Sentry) {
+    //   window.Sentry.captureException(error, {
+    //     contexts: {
+    //       react: {
+    //         componentStack: errorInfo.componentStack,
+    //       },
+    //     },
+    //   });
+    // }
+    
+    // 로컬 로깅 (개발 환경)
+    if (import.meta.env.DEV) {
+      console.group('🚨 Error Boundary');
+      console.error('Error:', error);
+      console.error('Error Info:', errorInfo);
+      console.error('Component Stack:', errorInfo.componentStack);
+      console.groupEnd();
+    }
   }
 
   render() {

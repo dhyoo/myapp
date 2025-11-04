@@ -1,0 +1,117 @@
+/* Dashboard Page Styles */
+.pageContainer {
+  @apply flex flex-col;
+}
+
+.header {
+  @apply flex items-center justify-between mb-6;
+}
+
+.title {
+  @apply text-2xl font-bold text-gray-900;
+}
+
+.warningBadge {
+  @apply flex items-center gap-2 px-3 py-1.5 bg-yellow-50 border border-yellow-200 rounded-md;
+}
+
+.warningIcon {
+  @apply w-4 h-4 text-yellow-600;
+}
+
+.warningText {
+  @apply text-xs font-medium text-yellow-800;
+}
+
+.statsGrid {
+  @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6;
+}
+
+.statCard {
+  @apply bg-white p-6 rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow relative;
+}
+
+.statBadge {
+  @apply absolute top-2 right-2;
+}
+
+.statBadgeLabel {
+  @apply px-2 py-0.5 bg-yellow-100 text-yellow-700 text-xs font-medium rounded;
+}
+
+.statHeader {
+  @apply flex items-center justify-between mb-4;
+}
+
+.statTitle {
+  @apply text-sm font-medium text-gray-500;
+}
+
+.statIcon {
+  @apply w-10 h-10 rounded-full flex items-center justify-center;
+}
+
+.statIconBlue {
+  @apply bg-blue-100;
+}
+
+.statIconGreen {
+  @apply bg-green-100;
+}
+
+.statIconPurple {
+  @apply bg-purple-100;
+}
+
+.statIconText {
+  @apply text-xl;
+}
+
+.statIconTextBlue {
+  @apply text-blue-600;
+}
+
+.statIconTextGreen {
+  @apply text-green-600;
+}
+
+.statIconTextPurple {
+  @apply text-purple-600;
+}
+
+.statValue {
+  @apply text-3xl font-bold text-gray-900 mb-1;
+}
+
+.statError {
+  @apply text-sm text-red-600;
+}
+
+.changePositive {
+  @apply text-xs text-green-600;
+}
+
+.changeNegative {
+  @apply text-xs text-red-600;
+}
+
+.warningMessage {
+  @apply mb-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg flex items-center gap-2;
+}
+
+.errorMessage {
+  @apply mb-4 p-4 bg-red-50 border border-red-200 rounded-lg;
+}
+
+.errorMessageText {
+  @apply text-red-600 text-sm;
+}
+
+.loadingContainer {
+  @apply bg-white p-6 rounded-lg shadow-sm border border-gray-200;
+}
+
+.loadingText {
+  @apply text-gray-500;
+}
+

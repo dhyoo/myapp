@@ -1,0 +1,117 @@
+/* DataTable Styles */
+.container {
+  @apply bg-white rounded-lg border border-gray-300 shadow-sm;
+}
+
+.header {
+  @apply p-4 border-b border-gray-300 bg-gray-50;
+}
+
+.headerTop {
+  @apply flex items-center justify-between mb-4;
+}
+
+.headerTitle {
+  @apply text-lg font-semibold text-gray-900;
+}
+
+.addButton {
+  @apply px-4 py-2 bg-primary-600 text-white rounded-md hover:bg-primary-700 transition-colors text-sm font-medium;
+}
+
+.headerBottom {
+  @apply flex items-center gap-3;
+}
+
+.searchContainer {
+  @apply flex-1 relative;
+}
+
+.searchInput {
+  @apply w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 text-sm;
+}
+
+.searchIcon {
+  @apply absolute right-3 top-2.5 w-5 h-5 text-gray-400;
+}
+
+.filterSelect {
+  @apply px-3 py-2 border border-gray-300 rounded-md bg-white text-sm focus:outline-none focus:ring-2 focus:ring-primary-500;
+}
+
+.tableContainer {
+  @apply overflow-x-auto;
+}
+
+.table {
+  @apply w-full;
+}
+
+.tableHeader {
+  @apply bg-gray-50 border-b border-gray-200;
+}
+
+.tableHeaderRow {
+  @apply text-left;
+}
+
+.tableHeaderCell {
+  @apply px-4 py-3 text-xs font-semibold text-gray-700 uppercase tracking-wider;
+}
+
+.sortableHeader {
+  @apply cursor-pointer hover:bg-gray-100 transition-colors;
+}
+
+.sortIcon {
+  @apply inline-block ml-1;
+}
+
+.tableBody {
+  @apply bg-white divide-y divide-gray-200;
+}
+
+.tableRow {
+  @apply hover:bg-gray-50 transition-colors;
+}
+
+.tableRowClickable {
+  @apply cursor-pointer;
+}
+
+.tableCell {
+  @apply px-4 py-3 whitespace-nowrap text-sm text-gray-900;
+}
+
+.pagination {
+  @apply p-4 border-t border-gray-300 bg-gray-50 flex items-center justify-between;
+}
+
+.paginationInfo {
+  @apply text-sm text-gray-700;
+}
+
+.paginationControls {
+  @apply flex items-center gap-2;
+}
+
+.paginationButton {
+  @apply px-3 py-1.5 border border-gray-300 rounded-md bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors;
+}
+
+.paginationButtonDisabled {
+  @apply opacity-50 cursor-not-allowed;
+}
+
+.paginationButtonActive {
+  @apply bg-primary-600 text-white border-primary-600;
+}
+
+.emptyState {
+  @apply p-8 text-center;
+}
+
+.emptyStateText {
+  @apply text-gray-500 text-sm;
+}
+

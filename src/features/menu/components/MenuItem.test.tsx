@@ -1,11 +1,12 @@
-import { describe, it, expect, vi } from 'vitest';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { describe, expect, it } from 'vitest';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
+import React, { type ReactElement } from 'react';
 import { MenuItem } from './MenuItem';
 import type { MenuItem as MenuItemType } from '../types/menu.types';
 
 // React Router Mock
-const renderWithRouter = (component: React.ReactElement) => {
+const renderWithRouter = (component: ReactElement) => {
   return render(<BrowserRouter>{component}</BrowserRouter>);
 };
 
