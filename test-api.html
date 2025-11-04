@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API 연결 테스트</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .endpoint {
+            background: white;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .endpoint h3 {
+            margin-top: 0;
+            color: #333;
+        }
+        .status {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+        .status.success { background: #4caf50; color: white; }
+        .status.error { background: #f44336; color: white; }
+        .status.loading { background: #ff9800; color: white; }
+        pre {
+            background: #f5f5f5;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+            font-size: 12px;
+        }
+        button {
+            background: #2196f3;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover { background: #1976d2; }
+        .info {
+            background: #e3f2fd;
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔌 API 연결 테스트</h1>
+    
+    <div class="info">
+        <strong>API Base URL:</strong> <span id="apiBaseUrl"></span><br>
+        <strong>테스트 시간:</strong> <span id="testTime"></span>
+    </div>
+
+    <button onclick="testAll()">모든 API 테스트</button>
+    <button onclick="clearResults()">결과 지우기</button>
+
+    <div id="results"></div>
+
+    <script>
+        const API_BASE_URL = 'http://localhost:8080/api';
+        const endpoints = [
+            { name: '메뉴 목록', path: '/menus' },
+            { name: '활동 로그', path: '/activities' },
+            { name: '사용자 목록', path: '/users' },
+            { name: '역할 목록', path: '/roles' },
+            { name: '대시보드 통계', path: '/dashboard/stats' }
+        ];
+
+        document.getElementById('apiBaseUrl').textContent = API_BASE_URL;
+        document.getElementById('testTime').textContent = new Date().toLocaleString('ko-KR');
+
+        async function testEndpoint(endpoint) {
+            const resultDiv = document.getElementById(`result-${endpoint.path}`);
+            const statusSpan = resultDiv.querySelector('.status');
+            const responseDiv = resultDiv.querySelector('.response');
+            
+            statusSpan.textContent = '테스트 중...';
+            statusSpan.className = 'status loading';
+            responseDiv.textContent = '';
+
+            try {
+                const startTime = Date.now();
+                const response = await fetch(`${API_BASE_URL}${endpoint.path}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                });
+
+                const endTime = Date.now();
+                const duration = endTime - startTime;
+
+                let data;
+                try {
+                    data = await response.json();
+                } catch (e) {
+                    data = await response.text();
+                }
+
+                if (response.ok) {
+                    statusSpan.textContent = `✅ 성공 (${response.status}) - ${duration}ms`;
+                    statusSpan.className = 'status success';
+                    responseDiv.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+                } else {
+                    statusSpan.textContent = `❌ 실패 (${response.status}) - ${duration}ms`;
+                    statusSpan.className = 'status error';
+                    responseDiv.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+                }
+            } catch (error) {
+                statusSpan.textContent = `❌ 연결 실패`;
+                statusSpan.className = 'status error';
+                responseDiv.innerHTML = `<pre>오류: ${error.message}\n\n가능한 원인:\n- 백엔드 서버가 실행되지 않았습니다 (http://localhost:8080)\n- CORS 오류가 발생했습니다\n- 네트워크 연결 문제</pre>`;
+            }
+        }
+
+        async function testAll() {
+            endpoints.forEach(endpoint => {
+                testEndpoint(endpoint);
+            });
+        }
+
+        function clearResults() {
+            endpoints.forEach(endpoint => {
+                const resultDiv = document.getElementById(`result-${endpoint.path}`);
+                const statusSpan = resultDiv.querySelector('.status');
+                const responseDiv = resultDiv.querySelector('.response');
+                statusSpan.textContent = '대기 중';
+                statusSpan.className = 'status';
+                responseDiv.textContent = '';
+            });
+        }
+
+        // 초기화
+        endpoints.forEach(endpoint => {
+            const div = document.createElement('div');
+            div.className = 'endpoint';
+            div.id = `result-${endpoint.path}`;
+            div.innerHTML = `
+                <h3>${endpoint.name} <span class="status">대기 중</span></h3>
+                <div><strong>URL:</strong> ${API_BASE_URL}${endpoint.path}</div>
+                <button onclick="testEndpoint(${JSON.stringify(endpoint)})">테스트</button>
+                <div class="response" style="margin-top: 10px;"></div>
+            `;
+            document.getElementById('results').appendChild(div);
+        });
+    </script>
+</body>
+</html>
+

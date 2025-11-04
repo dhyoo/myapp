@@ -19,7 +19,7 @@ export function MenuItem({ menu, level = 0 }: MenuItemProps) {
         <Link
           to={menu.path}
           className={`menu-link ${isActive ? 'active' : ''} ${level > 0 ? 'pl-6 py-2 text-xs' : ''}`}
-          onClick={(e) => {
+          onClick={(e: React.MouseEvent<HTMLAnchorElement>) => {
             if (hasChildren) {
               e.preventDefault();
               setIsOpen(!isOpen);

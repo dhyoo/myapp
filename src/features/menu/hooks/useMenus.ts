@@ -9,6 +9,70 @@ import type { PermissionType } from '@/shared/types/common.types';
 const MENU_QUERY_KEY = ['menus'];
 
 /**
+ * 기본 메뉴 데이터 (백엔드가 없을 때 사용)
+ */
+async function getDefaultMenus(): Promise<MenuItem[]> {
+  try {
+    // 먼저 public/mock-menus.json 파일을 시도
+    const response = await fetch('/mock-menus.json');
+    if (response.ok) {
+      const data = await response.json();
+      if (data.success && Array.isArray(data.data) && data.data.length > 0) {
+        console.log('useMenus: Loaded menus from mock-menus.json');
+        return data.data;
+      }
+    }
+  } catch (error) {
+    console.warn('useMenus: Failed to load mock-menus.json', error);
+  }
+  
+  // 기본 메뉴 데이터 반환
+  return [
+    {
+      menuId: 'MENU_001',
+      title: '대시보드',
+      path: '/dashboard',
+      icon: '📊',
+      permission: 'READ' as const,
+      children: null,
+    },
+    {
+      menuId: 'MENU_002',
+      title: '사용자 관리',
+      path: '/users',
+      icon: '👥',
+      permission: 'ADMIN' as const,
+      children: [
+        {
+          menuId: 'MENU_003',
+          title: '사용자 목록',
+          path: '/users/list',
+          icon: '📋',
+          permission: 'READ' as const,
+          children: null,
+        },
+        {
+          menuId: 'MENU_004',
+          title: '사용자 등록',
+          path: '/users/create',
+          icon: '➕',
+          permission: 'WRITE' as const,
+          children: null,
+        },
+      ],
+    },
+    {
+      menuId: 'MENU_005',
+      title: '권한 관리',
+      path: '/roles',
+      icon: '🔐',
+      permission: 'ADMIN' as const,
+      children: null,
+    },
+  ];
+}
+
+/**
  * 메뉴 조회 React Query Hook
  */
 export function useMenus(userPermission: PermissionType = 'READ') {
@@ -33,24 +97,33 @@ export function useMenus(userPermission: PermissionType = 'READ') {
         console.log('useMenus: API response received', response);
         
         if (!response.success) {
-          const errorMsg = response.error?.message || '메뉴 조회 실패';
-          console.error('useMenus: API returned error', errorMsg);
-          throw new Error(errorMsg);
+          // 에러 발생 시 기본 메뉴 데이터 사용
+          const errorMsg = response.message || response.error?.message || '메뉴 조회 실패';
+          console.warn('useMenus: API returned error, using default menus', errorMsg);
+          const defaultMenus = await getDefaultMenus();
+          setMenus(defaultMenus);
+          return defaultMenus;
         }
         
-        if (!response.data) {
-          console.error('useMenus: No data in response');
-          throw new Error('메뉴 데이터가 없습니다');
+        const menus = response.data || [];
+        if (menus.length === 0) {
+          // 빈 데이터가 오면 기본 메뉴 사용
+          console.warn('useMenus: Empty data received, using default menus');
+          const defaultMenus = await getDefaultMenus();
+          setMenus(defaultMenus);
+          return defaultMenus;
         }
-        
-        console.log('useMenus: Setting menus', response.data);
-        setMenus(response.data);
-        return response.data;
+        console.log('useMenus: Setting menus', menus);
+        setMenus(menus);
+        return menus;
       } catch (error) {
-        console.error('useMenus: Error caught', error);
+        console.error('useMenus: Error caught, using default menus', error);
         const err = error instanceof Error ? error : new Error('Unknown error');
         setError(err);
-        throw err;
+        // 에러 발생 시에도 기본 메뉴 반환
+        const defaultMenus = await getDefaultMenus();
+        setMenus(defaultMenus);
+        return defaultMenus;
       } finally {
         setLoading(false);
       }
@@ -84,9 +157,14 @@ export function useMenus(userPermission: PermissionType = 'READ') {
     }
   }, [query.data, userPermission, cachedMenus, shouldUseCache, setFilteredMenus, setError]);
 
-  const filteredMenus = useMenuStore((state) => state.filteredMenus);
-  const storeLoading = useMenuStore((state) => state.isLoading);
-  const storeError = useMenuStore((state) => state.error);
+  type MenuStoreState = {
+    filteredMenus: MenuItem[];
+    isLoading: boolean;
+    error: Error | null;
+  };
+  const filteredMenus = useMenuStore((state: MenuStoreState) => state.filteredMenus);
+  const storeLoading = useMenuStore((state: MenuStoreState) => state.isLoading);
+  const storeError = useMenuStore((state: MenuStoreState) => state.error);
 
   return {
     menus: filteredMenus || [],

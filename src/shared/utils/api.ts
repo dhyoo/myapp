@@ -1,6 +1,7 @@
 import type { ApiResponse } from '@/shared/types/common.types';
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '/api';
+// 백엔드 서버는 http://localhost:8080에서 실행
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080/api';
 
 class ApiClient {
   private getHeaders(): HeadersInit {
@@ -12,68 +13,6 @@ class ApiClient {
   }
 
   async get<T>(endpoint: string): Promise<ApiResponse<T>> {
-    // Mock 데이터를 위한 임시 처리
-    if (endpoint === '/menus') {
-      try {
-        console.log('[API] Fetching mock menus from /mock-menus.json');
-        const response = await fetch('/mock-menus.json', {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        });
-        
-        if (response.ok) {
-          const data = await response.json();
-          console.log('[API] Mock data loaded successfully:', data);
-          
-          // 응답 형식 검증
-          if (data && data.success && Array.isArray(data.data)) {
-            return data as ApiResponse<T>;
-          } else {
-            console.warn('[API] Invalid response format, using fallback');
-          }
-        } else {
-          console.warn(`[API] Mock data fetch failed: ${response.status} ${response.statusText}`);
-        }
-      } catch (error) {
-        console.error('[API] Error loading mock data:', error);
-      }
-      
-      // Mock 데이터 실패 시 기본 데이터 반환
-      console.log('[API] Using fallback menu data');
-      return {
-        success: true,
-        data: [
-          {
-            menuId: 'MENU_001',
-            title: '대시보드',
-            path: '/dashboard',
-            icon: '📊',
-            permission: 'READ' as const,
-            children: null,
-          },
-          {
-            menuId: 'MENU_002',
-            title: '사용자 관리',
-            path: '/users',
-            icon: '👥',
-            permission: 'ADMIN' as const,
-            children: null,
-          },
-          {
-            menuId: 'MENU_005',
-            title: '권한 관리',
-            path: '/roles',
-            icon: '🔐',
-            permission: 'ADMIN' as const,
-            children: null,
-          },
-        ] as T,
-        timestamp: new Date().toISOString(),
-      };
-    }
-
     try {
       const response = await fetch(`${API_BASE_URL}${endpoint}`, {
         method: 'GET',
@@ -81,13 +20,86 @@ class ApiClient {
       });
 
       if (!response.ok) {
-        throw new Error(`API Error: ${response.status} ${response.statusText}`);
+        // 네트워크 오류나 404 등의 경우에도 기본 응답 반환
+        return {
+          success: false,
+          error: {
+            code: `HTTP_${response.status}`,
+            message: `API 호출 실패: ${response.status} ${response.statusText}`,
+          },
+        };
       }
 
-      return response.json();
+      // 응답 본문 확인
+      const contentType = response.headers.get('content-type') || '';
+      const isJson = contentType.includes('application/json');
+      
+      // 응답 본문 읽기
+      const text = await response.text();
+      
+      // 빈 응답 체크
+      if (!text || text.trim().length === 0) {
+        console.error('API response is empty', {
+          url: `${API_BASE_URL}${endpoint}`,
+          status: response.status,
+          contentType,
+        });
+        return {
+          success: false,
+          error: {
+            code: 'EMPTY_RESPONSE',
+            message: '서버에서 빈 응답을 반환했습니다.',
+          },
+        };
+      }
+
+      // JSON 파싱 시도
+      if (isJson) {
+        try {
+          const data = JSON.parse(text);
+          return data;
+        } catch (parseError) {
+          console.error('Failed to parse JSON response:', {
+            error: parseError,
+            url: `${API_BASE_URL}${endpoint}`,
+            status: response.status,
+            contentType,
+            responseText: text.substring(0, 200), // 처음 200자만 로그
+          });
+          return {
+            success: false,
+            error: {
+              code: 'PARSE_ERROR',
+              message: `JSON 파싱 실패: ${parseError instanceof Error ? parseError.message : '알 수 없는 오류'}`,
+            },
+          };
+        }
+      } else {
+        // JSON이 아닌 응답 (HTML, 텍스트 등)
+        console.error('API returned non-JSON response:', {
+          url: `${API_BASE_URL}${endpoint}`,
+          status: response.status,
+          contentType,
+          responseText: text.substring(0, 500), // 처음 500자만 로그
+        });
+        return {
+          success: false,
+          error: {
+            code: 'INVALID_CONTENT_TYPE',
+            message: `서버가 JSON이 아닌 응답을 반환했습니다. (Content-Type: ${contentType})`,
+          },
+        };
+      }
     } catch (error) {
       console.error('API call failed:', error);
-      throw error;
+      // 네트워크 오류 시에도 기본 응답 반환
+      return {
+        success: false,
+        error: {
+          code: 'NETWORK_ERROR',
+          message: error instanceof Error ? error.message : '알 수 없는 오류가 발생했습니다.',
+        },
+      };
     }
   }
 

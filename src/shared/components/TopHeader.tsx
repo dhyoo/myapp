@@ -7,22 +7,12 @@ interface TopHeaderProps {
 }
 
 export function TopHeader({ userPermission, onPermissionChange }: TopHeaderProps) {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
     <header className="fixed top-0 left-0 right-0 h-16 bg-white border-b border-gray-300 shadow-md z-50">
       <div className="h-full flex items-center justify-between px-6">
-        {/* 왼쪽: 로고 및 메뉴 토글 */}
+        {/* 왼쪽: 로고 */}
         <div className="flex items-center gap-4">
-          <button
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="lg:hidden p-2 rounded-md border border-gray-300 bg-white hover:bg-gray-50 transition-colors"
-            aria-label="메뉴 토글"
-          >
-            <svg className="w-5 h-5 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-            </svg>
-          </button>
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-md bg-primary-600 flex items-center justify-center">
               <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">

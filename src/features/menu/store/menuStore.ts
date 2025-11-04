@@ -19,21 +19,21 @@ interface MenuState {
 
 const CACHE_DURATION = 5 * 60 * 1000; // 5분
 
-export const useMenuStore = create<MenuState>((set) => ({
+export const useMenuStore = create<MenuState>((set: (partial: Partial<MenuState> | ((state: MenuState) => Partial<MenuState>)) => void) => ({
   menus: [],
   filteredMenus: [],
   isLoading: false,
   error: null,
   lastFetched: null,
-  setMenus: (menus) =>
+  setMenus: (menus: MenuItem[]) =>
     set({
       menus,
       lastFetched: Date.now(),
       error: null,
     }),
-  setFilteredMenus: (filteredMenus) => set({ filteredMenus }),
-  setLoading: (isLoading) => set({ isLoading }),
-  setError: (error) => set({ error }),
+  setFilteredMenus: (filteredMenus: MenuItem[]) => set({ filteredMenus }),
+  setLoading: (isLoading: boolean) => set({ isLoading }),
+  setError: (error: Error | null) => set({ error }),
   clearMenus: () =>
     set({
       menus: [],

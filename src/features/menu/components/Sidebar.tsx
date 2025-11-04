@@ -1,6 +1,7 @@
 import { MenuItem } from './MenuItem';
 import { useMenus } from '../hooks/useMenus';
 import type { PermissionType } from '@/shared/types/common.types';
+import type { MenuItem as MenuItemType } from '../types/menu.types';
 
 interface SidebarProps {
   userPermission?: PermissionType;
@@ -61,7 +62,7 @@ export function Sidebar({ userPermission = 'READ' }: SidebarProps) {
       </div>
       <nav className="p-3">
         <ul className="space-y-2">
-          {menus.map((menu) => (
+          {menus.map((menu: MenuItemType) => (
             <MenuItem key={menu.menuId} menu={menu} />
           ))}
         </ul>
