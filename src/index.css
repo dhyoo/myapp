@@ -1,0 +1,30 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-gray-50 text-gray-900 antialiased;
+  }
+}
+
+@layer components {
+  .menu-link {
+    @apply flex items-center gap-3 px-4 py-3 rounded-md text-gray-800 no-underline 
+           transition-all duration-200 border border-gray-300 bg-white
+           hover:bg-primary-50 hover:border-primary-400 hover:shadow-sm
+           text-sm font-medium;
+  }
+  
+  .menu-link.active {
+    @apply bg-primary-600 text-white border-primary-600 shadow-md;
+  }
+  
+  .menu-link.active .menu-arrow {
+    @apply text-white;
+  }
+  
+  .menu-link.active .menu-icon {
+    @apply text-white;
+  }
+}

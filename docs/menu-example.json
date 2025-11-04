@@ -1,0 +1,106 @@
+{
+  "success": true,
+  "data": [
+    {
+      "menuId": "MENU_001",
+      "title": "대시보드",
+      "path": "/dashboard",
+      "icon": "DashboardIcon",
+      "permission": "READ",
+      "children": null
+    },
+    {
+      "menuId": "MENU_002",
+      "title": "사용자 관리",
+      "path": "/users",
+      "icon": "UserIcon",
+      "permission": "ADMIN",
+      "children": [
+        {
+          "menuId": "MENU_003",
+          "title": "사용자 목록",
+          "path": "/users/list",
+          "icon": "UserListIcon",
+          "permission": "READ",
+          "children": null
+        },
+        {
+          "menuId": "MENU_004",
+          "title": "사용자 등록",
+          "path": "/users/create",
+          "icon": "UserAddIcon",
+          "permission": "WRITE",
+          "children": null
+        },
+        {
+          "menuId": "MENU_005",
+          "title": "사용자 삭제",
+          "path": "/users/delete",
+          "icon": "UserDeleteIcon",
+          "permission": "DELETE",
+          "children": null
+        }
+      ]
+    },
+    {
+      "menuId": "MENU_006",
+      "title": "권한 관리",
+      "path": "/roles",
+      "icon": "RoleIcon",
+      "permission": "ADMIN",
+      "children": [
+        {
+          "menuId": "MENU_007",
+          "title": "역할 목록",
+          "path": "/roles/list",
+          "icon": "RoleListIcon",
+          "permission": "READ",
+          "children": null
+        },
+        {
+          "menuId": "MENU_008",
+          "title": "역할 생성",
+          "path": "/roles/create",
+          "icon": "RoleAddIcon",
+          "permission": "ADMIN",
+          "children": null
+        }
+      ]
+    },
+    {
+      "menuId": "MENU_009",
+      "title": "조직 관리",
+      "path": "/organizations",
+      "icon": "OrganizationIcon",
+      "permission": "READ",
+      "children": [
+        {
+          "menuId": "MENU_010",
+          "title": "조직 목록",
+          "path": "/organizations/list",
+          "icon": "OrgListIcon",
+          "permission": "READ",
+          "children": null
+        },
+        {
+          "menuId": "MENU_011",
+          "title": "조직 편집",
+          "path": "/organizations/edit",
+          "icon": "OrgEditIcon",
+          "permission": "WRITE",
+          "children": null
+        }
+      ]
+    },
+    {
+      "menuId": "MENU_012",
+      "title": "시스템 설정",
+      "path": "/settings",
+      "icon": "SettingsIcon",
+      "permission": "ADMIN",
+      "children": null
+    }
+  ],
+  "timestamp": "2024-01-15T10:30:00Z"
+}
+

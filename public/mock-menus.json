@@ -1,0 +1,48 @@
+{
+  "success": true,
+  "data": [
+    {
+      "menuId": "MENU_001",
+      "title": "대시보드",
+      "path": "/dashboard",
+      "icon": "📊",
+      "permission": "READ",
+      "children": null
+    },
+    {
+      "menuId": "MENU_002",
+      "title": "사용자 관리",
+      "path": "/users",
+      "icon": "👥",
+      "permission": "ADMIN",
+      "children": [
+        {
+          "menuId": "MENU_003",
+          "title": "사용자 목록",
+          "path": "/users/list",
+          "icon": "📋",
+          "permission": "READ",
+          "children": null
+        },
+        {
+          "menuId": "MENU_004",
+          "title": "사용자 등록",
+          "path": "/users/create",
+          "icon": "➕",
+          "permission": "WRITE",
+          "children": null
+        }
+      ]
+    },
+    {
+      "menuId": "MENU_005",
+      "title": "권한 관리",
+      "path": "/roles",
+      "icon": "🔐",
+      "permission": "ADMIN",
+      "children": null
+    }
+  ],
+  "timestamp": "2024-01-15T10:30:00Z"
+}
+
