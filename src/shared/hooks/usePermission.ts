@@ -54,7 +54,7 @@ export function usePermission() {
     hasAnyPermission,
     hasAllPermissions,
     isAdmin: currentPermission === 'ADMIN',
-    isReadOnly: currentPermission === 'READ',
+    isReadOnly: currentPermission === ('READ' as PermissionType),
   };
 }
 

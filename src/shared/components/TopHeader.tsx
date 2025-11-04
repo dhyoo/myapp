@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import type { PermissionType } from '@/shared/types/common.types';
 import styles from './TopHeader.module.css';
 

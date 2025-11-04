@@ -1,6 +1,8 @@
-import { describe, it, expect, vi } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
+import React from 'react';
+import '@testing-library/jest-dom';
 import { ProtectedRoute } from '../ProtectedRoute';
 
 // Mock usePermission hook

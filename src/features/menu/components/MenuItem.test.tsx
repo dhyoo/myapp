@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import React, { type ReactElement } from 'react';
+import '@testing-library/jest-dom';
 import { MenuItem } from './MenuItem';
 import type { MenuItem as MenuItemType } from '../types/menu.types';
 
